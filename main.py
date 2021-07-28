@@ -1,47 +1,79 @@
-import funcs
+import math
 import tkinter as tk
 
-def calxp():
-    lvlfrm = frm_entry.get()
-    lvlto = to_entry.get()
-    ans = funcs.fromto(lvlfrm, lvlto)
-    lbl_xp["text"]= "XP: " + str(ans)
-    lbl_sets["text"] = "Sets: " + str(int(ans/100))
+# ---------------------------- GUI ----------------------------
+class SteamLevelHelper(tk.Tk):
+    def __init__(self):
+        tk.Tk.__init__(self)
 
-window = tk.Tk()
-window.title("Steam Level Helper")
+        self.title("Steam Level Helper")
+        self.minsize(400,200)
 
-window.rowconfigure([0, 1, 2], minsize=50, weight=1)
-window.columnconfigure([0, 1, 2, 3, 4], minsize=50, weight=1)
+        self.rowconfigure([0, 1, 2], minsize=50, weight=1)
+        self.columnconfigure([0, 1, 2, 3, 4], minsize=50, weight=1)
 
-# Title
-lbl_title = tk.Label(text="Steam Level Helper")
-lbl_title.grid(row=0, column=2)
+        # ----------- Main GUI -----------
+        # Title
+        lbl_title = tk.Label(self, text="Steam Level Helper")
+        lbl_title.grid(row=0, column=2)
 
-# to - from - calculate
-lbl_frm = tk.Label(text="From:")
-lbl_frm.grid(row=1, column=0)
+        # log-in
+        #btn_login = tk.Button(
+        #            self,
+        #            text="Log-in",
+        #            command=logwindow
+        #        )
+        #btn_login.grid(row=0, column=4)
 
-frm_entry = tk.Entry(width=10)
-frm_entry.grid(row=1, column=1)
+        # to - from - calculate
+        self.lbl_frm = tk.Label(self, text="From:")
+        self.lbl_frm.grid(row=1, column=0)
 
-lbl_to = tk.Label(text="To:")
-lbl_to.grid(row=1, column=2)
+        self.frm_entry = tk.Entry(self, width=10)
+        self.frm_entry.grid(row=1, column=1)
 
-to_entry = tk.Entry(width=10)
-to_entry.grid(row=1, column=3)
+        self.lbl_to = tk.Label(self, text="To:")
+        self.lbl_to.grid(row=1, column=2)
 
-btn_calc = tk.Button(
-            text="calculate",
-            command=calxp
-        )
-btn_calc.grid(row=1, column=4)
+        self.to_entry = tk.Entry(self, width=10)
+        self.to_entry.grid(row=1, column=3)
 
-# results
-lbl_xp = tk.Label(text="XP:")
-lbl_xp.grid(row=2, column=1)
+        self.btn_calc = tk.Button(
+                    self,
+                    text="calculate",
+                    command=self.calxp
+                )
+        self.btn_calc.grid(row=1, column=4)
 
-lbl_sets = tk.Label(text="Sets:")
-lbl_sets.grid(row=2, column=3)
+        # results
+        self.lbl_xp = tk.Label(self, text="XP:")
+        self.lbl_xp.grid(row=2, column=1)
 
-window.mainloop()
+        self.lbl_sets = tk.Label(self, text="Sets:")
+        self.lbl_sets.grid(row=2, column=3)
+
+    # ----------- Functions -----------
+    def levelxp(self, level):
+        level = int(level)
+        xp = (((math.floor(level / 10) + 1) * 100) * (level % 10))+(pow(math.floor(level / 10), 2) + math.floor(level / 10)) * 500
+        return xp
+
+
+    def fromto(self, fromLvl, toLvl):
+        if toLvl > fromLvl:
+            fromXp = self.levelxp(fromLvl)
+            toXp = self.levelxp(toLvl)
+            return toXp - fromXp
+        else:
+            return 0
+
+    def calxp(self):
+        lvlfrm = self.frm_entry.get()
+        lvlto = self.to_entry.get()
+        ans = self.fromto(lvlfrm, lvlto)
+        self.lbl_xp["text"]= "XP: " + str(ans)
+        self.lbl_sets["text"] = "Sets: " + str(int(ans/100))
+
+if __name__ == "__main__":
+    app = SteamLevelHelper()
+    app.mainloop()
