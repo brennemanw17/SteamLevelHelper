@@ -1,10 +1,11 @@
 import math
 import tkinter as tk
 
-# ---------------------------- GUI ----------------------------
+
+# ---------------------------- Main GUI ----------------------------
 class SteamLevelHelper(tk.Tk):
     def __init__(self):
-        tk.Tk.__init__(self)
+        super().__init__()
 
         self.title("Steam Level Helper")
         self.minsize(400,200)
@@ -12,20 +13,10 @@ class SteamLevelHelper(tk.Tk):
         self.rowconfigure([0, 1, 2], minsize=50, weight=1)
         self.columnconfigure([0, 1, 2, 3, 4], minsize=50, weight=1)
 
-        # ----------- Main GUI -----------
         # Title
-        lbl_title = tk.Label(self, text="Steam Level Helper")
-        lbl_title.grid(row=0, column=2)
+        self.lbl_title = tk.Label(self, text="Steam Level Helper")
+        self.lbl_title.grid(row=0, column=2)
 
-        # log-in
-        #btn_login = tk.Button(
-        #            self,
-        #            text="Log-in",
-        #            command=logwindow
-        #        )
-        #btn_login.grid(row=0, column=4)
-
-        # to - from - calculate
         self.lbl_frm = tk.Label(self, text="From:")
         self.lbl_frm.grid(row=1, column=0)
 
